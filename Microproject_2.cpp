@@ -22,7 +22,6 @@ int thirdComponentNum;// processor number, which has the third component
 void* Smoker(void* param) {
 	int sNum = *((int*)param);//processor number
 	while (1)
-		//for (int i = 0; i < smokingTimes; i++)
 	{
 		// processors haven't the third component, will wait 
 		while (sNum != thirdComponentNum) {
@@ -35,7 +34,6 @@ void* Smoker(void* param) {
 		printf("Time %d: Smoker is smoking using %d processor\n", int(clock()), sNum);
 		//Sleep(1000);// 1 second for smoking (*_*)
 		printf("Time %d: Smoker finish smoking using %d processor\n\n", int(clock()), sNum);
-		//if (i != smokingTimes - 1)
 		sem_post(&componentsUncompleted);
 		pthread_mutex_unlock(&mutexD);
 		Sleep(6);//important, it let's Mediator func complete editing thirdComponentNum
