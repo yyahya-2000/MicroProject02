@@ -15,7 +15,6 @@ sem_t  componentsCompleted;
 sem_t  componentsUncompleted;
 
 pthread_mutex_t mutexD;
-pthread_mutex_t mutexF;
 
 int thirdComponentNum;// processor number, which has the third component
 
@@ -27,7 +26,6 @@ void* Smoker(void* param) {
 		while (sNum != thirdComponentNum) {
 			pthread_cond_wait(&component_cond, &mutexD);
 		}
-		pthread_mutex_lock(&mutexD);
 		sem_wait(&componentsCompleted);
 		printf("Time %d: Smoker is rolling the cigarette using %d processor\n", int(clock()), sNum);
 		//Sleep(500);// 0.5 second forrolling the cigarette
@@ -35,7 +33,6 @@ void* Smoker(void* param) {
 		//Sleep(1000);// 1 second for smoking (*_*)
 		printf("Time %d: Smoker finish smoking using %d processor\n\n", int(clock()), sNum);
 		sem_post(&componentsUncompleted);
-		pthread_mutex_unlock(&mutexD);
 		Sleep(6);//important, it let's Mediator func complete editing thirdComponentNum
 	}
 	return nullptr;
@@ -88,7 +85,6 @@ int main(int argc, char** argv) {
 
 	srand(time(NULL));
 	pthread_mutex_init(&mutexD, nullptr);
-	pthread_mutex_init(&mutexF, nullptr);
 	sem_init(&componentsCompleted, 0, 0);
 	sem_init(&componentsUncompleted, 0, 1);
 
